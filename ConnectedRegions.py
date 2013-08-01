@@ -1,0 +1,2 @@
+IJ.selectWindow("Red channel Processed 1");
+IJ.run("Find Connected Regions", "allow_diagonal display_image_for_each display_one_image display_results regions_for_values_over=100 minimum_number_of_points=100 stop_after=5");
