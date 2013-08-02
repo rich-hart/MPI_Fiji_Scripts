@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-untitled.py
+MainProgram.py
 
 Created by Richard Hart on 2013-08-02.
 Copyright (c) 2013 __MyCompanyName__. All rights reserved.
@@ -16,7 +16,7 @@ def LoadData():
 	
 
 def main():
-	pass
+	LoadData()
 
 
 if __name__ == '__main__':
