@@ -1,7 +1,10 @@
 from ij.plugin.frame import RoiManager
-import operator.methodcaller
+from operator import itemgetter, attrgetter
+from ij.gui import PolygonRoi, Roi
 true=1
 false=0
+IJ.run("Invert", "stack");
+IJ.run("Fill Holes", "stack");
 IJ.run("Create Selection");
 rm = RoiManager()
 rm.runCommand("add")
@@ -15,19 +18,30 @@ roi_array=rm.getRoisAsArray()
 max_roi=None
 max_points=-1
 
-#for roi in roi_array:
-#  polygon=roi.getPolygon()
-#  if polygon is not None:
-#    number_of_points = polygon.npoints
-#    if max_points < number_of_points:
-#      max_points=number_of_points
-#      max_roi=roi
+for roi in roi_array:
+  polygon=roi.getPolygon()
+  if polygon is not None:
+    number_of_points = polygon.npoints
+    if max_points < number_of_points:
+      max_points=number_of_points
+      max_roi=roi
 #print max_points
-sorted_roi_array=sorted(roi_array, key=methodcaller('getLength'), reverse=True)
+#sorted_roi_array=sorted(roi_array, key=methodcaller('getLength'), reverse=True)
+#length_array=[]
+#index=0
+#for roi in roi_array:
+#	index=index+1
+#	length_array.append((index,roi.getLength()))
+#sorted_length_array=sorted(length_array, key=itemgetter(0))
+
 rm.runCommand("Select All")
 rm.runCommand("Delete")
-for roi in sorted_roi_array:
-  rm.addRoi(roi)
+#for roi in roi_array:
+interpolated_polygon=max_roi.getInterpolatedPolygon(20,True)
+roi_polygon=PolygonRoi(interpolated_polygon,Roi.POLYGON)
+
+
+rm.addRoi(roi_polygon)
 
 
 #imp = IJ.getImage()
