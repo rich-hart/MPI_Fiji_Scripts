@@ -14,11 +14,15 @@ from ij.plugin.frame import RoiManager
 from operator import itemgetter, attrgetter
 from ij.gui import PolygonRoi, Roi
 
+RED=0
+GREEN=1
+BLUE=2
+
 def LoadData():
 	IJ.run("Image Sequence...", "open=/home/rhart/Desktop/Cell_Data/Data_Set_2/Fused_68_690004.tif number=103 starting=1 increment=1 scale=100 file=[] sort")
 
 	
-def Extract_Red_Channel():
+def Extract_Red_Channel(color):
 	imp = IJ.getImage()
 	stack = imp.getImageStack()  
 	print "number of slices:", imp.getNSlices()  
@@ -116,7 +120,7 @@ def RoiSelection():
 
 def main():
 	LoadData()
-	Extract_Red_Channel()
+	Extract_Red_Channel(RED)
 	Processing_Type_1()
 	ConnectedRegions()
 	RoiSelection()
