@@ -18,11 +18,17 @@ RED=0
 GREEN=1
 BLUE=2
 
+
+
+#load an image stack
 def LoadData():
-	IJ.run("Image Sequence...", "open=/home/rhart/Desktop/Cell_Data/Data_Set_2/Fused_68_690004.tif number=103 starting=1 increment=1 scale=100 file=[] sort")
+	IJ.run("Image Sequence...", "open=/home/rhart/Desktop/Cell_Data/Data_Set_2/Fused_68_690004.tif number=10 starting=10 increment=1 scale=100 file=[] sort")
+	imp = IJ.getImage()
+	imp.setTitle("Loaded Image")
 
 	
 def Extract_Red_Channel(color):
+	IJ.selectWindow("Loaded Image");
 	imp = IJ.getImage()
 	stack = imp.getImageStack()  
 	print "number of slices:", imp.getNSlices()  
@@ -31,9 +37,9 @@ def Extract_Red_Channel(color):
 	# Iterate each slice in the stack  
 	for i in xrange(1, imp.getNSlices()+1):  
 	  # Get the ColorProcessor slice at index i  
-	  cp = stack.getProcessor(i)  
+	  cp = stack.getProcessor(i)
 	  # Get its green channel as a FloatProcessor  
-	  fp = cp.toFloat(0, None)  
+	  fp = cp.toFloat(color, None)  
 	  # ... and store it in a list  
 	  reds.append(fp)  
 	# Create a new stack with only the green channel  
@@ -124,6 +130,7 @@ def main():
 	Processing_Type_1()
 	ConnectedRegions()
 	RoiSelection()
+
 
 if __name__ == '__main__':
 	main()
