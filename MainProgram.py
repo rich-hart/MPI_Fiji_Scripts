@@ -9,7 +9,7 @@ Copyright (c) 2013 __MyCompanyName__. All rights reserved.
 
 import sys
 import os
-from ij import IJ, ImagePlus, ImageStack 
+from ij import IJ, ImagePlus, ImageStack
 from ij.plugin.frame import RoiManager
 from operator import itemgetter, attrgetter
 from ij.gui import PolygonRoi, Roi
@@ -96,11 +96,10 @@ def RoiSelection(index):
 	for roi in roi_array:
 	  polygon=roi.getPolygon()
 	  if polygon is not None:
-		stats = imp_roi.getStatistics(ImageStatistics.AREA)
-		number_of_points = polygon.npoints
-		if max_points < stats.area:
-			max_points=number_of_points
-			max_roi=roi
+	    number_of_points = polygon.npoints
+	    if max_points < number_of_points:
+	      max_points=number_of_points
+	      max_roi=roi
 	#print max_points
 	#sorted_roi_array=sorted(roi_array, key=methodcaller('getLength'), reverse=True)
 	#length_array=[]
@@ -140,11 +139,12 @@ def LoadRoi():
 	IJ.selectWindow("Loaded Image")
 	rm.runCommand("Select All")
 	rm.runCommand("Deselect")
+	imp_load = IJ.getImage()
 	index = 0
 	for rio_polygon in regions_array:
 		index=index+1
+		imp_load.setSlice(index)
 		rm.addRoi(rio_polygon)
-		IJ.run("Next Slice [>]")
 	rm.moveRoisToOverlay(imp)
 	#sdas
 
@@ -153,10 +153,11 @@ def main():
 	Extract_Red_Channel(RED)
 	Processing_Type_1()
 	#ConnectedRegions()
+	IJ.selectWindow("Red channel Processed 1")
 	for i in range(1,103):
-		IJ.selectWindow("Red channel Processed 1")
 		IJ.run("Next Slice [>]")
 		RoiSelection(i)
+	IJ.selectWindow("Red channel Processed 1")
 	LoadRoi()
 
 
