@@ -94,12 +94,17 @@ def RoiSelection(index):
 	max_roi=None
 	max_points=-1
 	for roi in roi_array:
-	  polygon=roi.getPolygon()
-	  if polygon is not None:
-	    number_of_points = polygon.npoints
-	    if max_points < number_of_points:
-	      max_points=number_of_points
-	      max_roi=roi
+		polygon=roi.getPolygon()
+		if polygon is not None:
+			x=[]
+			y=[]
+			for i in range(1,polygon.npoints):
+				x.append(polygon.xpoints[i])
+				y.append(polygon.ypoints[i])
+			area=PolyArea(x,y,polygon.npoints)
+	    	if max_points < area:
+	      		max_points=area
+	      		max_roi=roi
 	#print max_points
 	#sorted_roi_array=sorted(roi_array, key=methodcaller('getLength'), reverse=True)
 	#length_array=[]
@@ -134,6 +139,15 @@ def RoiSelection(index):
 	#p=roi.getPolygon()
 	#print "Total number of points in ROI " + str(p.npoints)
 
+
+def PolyArea(x,y,n):
+	area = 0
+	for i in range(1,n):
+		j = (i + 1) % n
+		area = area + x[i] * y[j]
+		area = area - x[j] * y[i]
+	area = area / 2
+	return area
 
 def LoadRoi():
 	IJ.selectWindow("Loaded Image")
